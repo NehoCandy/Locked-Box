@@ -2,7 +2,7 @@
 
 #include <Wire.h>
 
-//adafruit graphics&OLED libs
+// adafruit graphics&OLED libs
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 #include "headerFont.h"
@@ -11,7 +11,7 @@
 #include "hintContentFont.h"
 #include "finalQuestionFont.h"
 
-//stepper motor lib and params
+// stepper motor lib and params
 #include <Stepper.h>
 int stepsPerRevolution = 2048;
 Stepper platform(stepsPerRevolution, 2, 4, 3, 5);
@@ -181,7 +181,7 @@ static const unsigned char PROGMEM logo_bmp[] =
      0b00000011, 0b11000000,
      0b00000001, 0b10000000};
 
-//Keypad config
+// Keypad config
 
 #include <Keypad.h>
 
@@ -190,18 +190,18 @@ int pinPosition = 0;
 char str[18] = {'-', '-', '-', '-', ' ', '-', '-', '-', ' ', '-', '-', '-', '-', '-', ' ', '-', '-', 0};
 int textPosition = 0;
 
-const byte ROWS = 4; //four rows
-const byte COLS = 4; //four columns
-//define the symbols on the buttons of the keypads
+const byte ROWS = 4; // four rows
+const byte COLS = 4; // four columns
+// define the symbols on the buttons of the keypads
 char hexaKeys[ROWS][COLS] = {
     {'w', 'y', 'm', 'g'},
     {'p', 'j', 'o', 'q'},
     {'r', 'u', 'h', 'v'},
     {'l', 'a', 'i', 'e'}};
-byte rowPins[ROWS] = {9, 8, 7, 6};     //connect to the row pinouts of the keypad
-byte colPins[COLS] = {13, 12, 11, 10}; //connect to the column pinouts of the keypad
+byte rowPins[ROWS] = {9, 8, 7, 6};     // connect to the row pinouts of the keypad
+byte colPins[COLS] = {13, 12, 11, 10}; // connect to the column pinouts of the keypad
 
-//initialize an instance of class NewKeypad
+// initialize an instance of class NewKeypad
 Keypad keypad = Keypad(makeKeymap(hexaKeys), rowPins, colPins, ROWS, COLS);
 
 // indicating variables
@@ -219,7 +219,7 @@ void setup()
   drawers.setSpeed(motSpeed);
   platform.setSpeed(motSpeed);
 
-  //initialize OLED with I2C addr 0x3C and set stuff:
+  // initialize OLED with I2C addr 0x3C and set stuff:
   display.begin(SSD1306_SWITCHCAPVCC, 0x3C);
   display.setTextColor(WHITE);
   display.setTextSize(1);
@@ -229,34 +229,78 @@ void setup()
 
 void loop()
 {
-  if (scene == 2)
+  switch (scene)
   {
-  }
-  else if (scene == 1)
-  {
+  case 1:
+    Serial.println("bef");
+    intro();
+    Serial.println("af");
+    scene = 2;
+    break;
+
+  case 2:
     if (!displayed)
     {
       displayEnterCreds();
     }
-    displayMiddle();
+    while (!finished)
+    {
+      displayMiddle();
+    }
     if (finished)
     {
       checkIfCorrect();
     }
+    break;
+  case 3:
+    Heartsflakes(logo_bmp, LOGO_WIDTH, LOGO_HEIGHT);
+
+  default:
+    Serial.println("hhhhhhh");
+    break;
   }
-  // displayMarry();
-  // displayLetters();
-  //Heartsflakes(logo_bmp, LOGO_WIDTH, LOGO_HEIGHT);
-  //   intro();
-  // openDrawers();
-  // closeDrawers();
-  //   moveMotor();
+
+  // }
+  // else if (scene == 3)
+  // {
+  // }
+  // else if (scene == 4)
+  // {
+  //   displayMarry();
+  // }
+
+  // else
+  // {
+  //   Heartsflakes(logo_bmp, LOGO_WIDTH, LOGO_HEIGHT);
+  // }
+  // // displayLetters();
+  // scene++;
+}
+
+void intro()
+{
+  clearDisplay();
+  display.setFont(&Schoolbell_Regular_15);
+  // displayText("HEY YOU!", 0, 30);
+  display.setCursor(0, 30);
+  display.print("HEY YOU!");
+  display.display();
+  pressNext();
+  display.setCursor(0, 30);
+  display.print("HOPE YOU ARE   EXCITED");
+  display.display();
+  pressNext();
+  display.setCursor(0, 30);
+  display.print("BECAUSE I AM");
+  display.display();
+  pressNext();
+  // change to the next scene
 }
 
 void displayLetters()
 {
   display.setFont(&Orbitron_Bold_12);
-  char customKey = keypad.getKey(); //this function reads the pressed key
+  char customKey = keypad.getKey(); // this function reads the pressed key
   if (customKey)
   {
     display.display();
@@ -282,10 +326,10 @@ void displayLetters()
 void displayEnterCreds()
 {
   // init display
-  //clear display buffer
+  // clear display buffer
   display.clearDisplay();
 
-  //set position of printing
+  // set position of printing
   ///////////HEADER////////////
   display.setCursor(0, 8);
   display.setFont(&Orbitron_Bold_12);
@@ -340,6 +384,7 @@ void checkIfCorrect()
 {
   if (pin[6] == 'w' && pin[7] == 'p' && pin[8] == 'r' && pin[9] == 'l')
   {
+    scene = 3;
     displayHeart();
     openDrawers();
   }
@@ -354,26 +399,6 @@ void checkIfCorrect()
     pin[8] = '*';
     pin[9] = '*';
   }
-}
-
-void intro()
-{
-  display.setFont(&Schoolbell_Regular_15);
-  displayText("HEY YOU!", 0, 30);
-  clearDisplay();
-  displayText("HOPE U R EXCITED", 0, 30);
-  clearDisplay();
-  displayText("BECAUSE I AM", 0, 30);
-  clearDisplay();
-  displayText("LETS START OFF         EASY", 0, 30);
-  clearDisplay();
-  displayText("LETS START OFF         EASY", 0, 30);
-  clearDisplay();
-  displayText("LETS START OFF         EASY", 0, 30);
-  clearDisplay();
-  displayText("LETS START OFF         EASY", 0, 30);
-  clearDisplay();
-  displayText("   SHALL WE??", 0, 30);
 }
 
 void displayMarry()
@@ -425,22 +450,24 @@ void displayMarry()
 
 void pressNext()
 {
-  char customKey = keypad.getKey(); //this function reads the presed key
+  Serial.println("in");
+  char customKey = keypad.getKey(); // this function reads the presed key
 
   while (customKey == NO_KEY)
   {
     customKey = keypad.getKey();
+    delay(100);
   }
   clearDisplay();
+  Serial.println("out");
 }
 
-//a function that prints all text on screen
+// a function that prints all text on screen
 void displayText(String text, int x, int y)
 {
   display.setCursor(x, y);
   display.print(text);
   display.display();
-  delay(700);
 }
 
 void clearDisplay()
@@ -476,8 +503,8 @@ void displayHeart()
   for (int i = 0; i < 3; i++)
   {
     Serial.println("1");
-    //display the image
-    //Draw the bitmap 1:
+    // display the image
+    // Draw the bitmap 1:
     display.drawBitmap(0, 0, heart_bitmap, 128, 64, WHITE);
     display.display();
     delay(400);
@@ -491,7 +518,7 @@ void displayBrokenHeart()
 {
   for (int i = 0; i < 3; i++)
   {
-    //display the image
+    // display the image
     display.clearDisplay(); // Make sure the display is cleared
     // Draw the bitmap 1:
     display.drawBitmap(0, 0, broken_heart_bitmap, 128, 64, WHITE);

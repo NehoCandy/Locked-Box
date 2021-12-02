@@ -252,29 +252,24 @@ void loop()
       checkIfCorrect();
     }
     break;
+
   case 3:
+    Serial.println("3");
+    displayMarry();
+    scene = 4;
+
+  case 4:
+    Serial.println("4");
+    displayLetters();
+    // scene = 5;
+
+  case 5:
+    Serial.println("5");
     Heartsflakes(logo_bmp, LOGO_WIDTH, LOGO_HEIGHT);
 
   default:
-    Serial.println("hhhhhhh");
     break;
   }
-
-  // }
-  // else if (scene == 3)
-  // {
-  // }
-  // else if (scene == 4)
-  // {
-  //   displayMarry();
-  // }
-
-  // else
-  // {
-  //   Heartsflakes(logo_bmp, LOGO_WIDTH, LOGO_HEIGHT);
-  // }
-  // // displayLetters();
-  // scene++;
 }
 
 void intro()
@@ -403,48 +398,32 @@ void checkIfCorrect()
 
 void displayMarry()
 {
-  //  Serial.println("hiii");/
+  display.clearDisplay();
+  // Serial.println("hereee");
   display.setFont(&Just_Another_Hand_Regular_22);
-  displayText("      AND NOW", 0, 30);
-  pressNext();
-  displayText("    ONE FINAL\n    QUESTION:", 0, 30);
-  pressNext();
-  displayText("      READY??", 0, 35);
-  pressNext();
-  displayText("      SO...", 0, 35);
-  pressNext();
-  displayText("    REMEMBER...", 0, 35);
-  pressNext();
-  // displayText("YOU \nALWAYS", 0, 25);
+  display.setCursor(0, 30);
+  // display.print("      AND NOW");
+  // display.display();
   // pressNext();
-  // displayText("WANTED", 0, 25);
+  // display.setCursor(0, 30);
+  // display.print("    ONE FINAL\n    QUESTION:");
+  // display.display();
   // pressNext();
-  // displayText("TO BE THE ONE", 0, 35);
+  // display.setCursor(0, 35);
+  // display.print("      READY??");
+  // display.display();
   // pressNext();
-  // displayText(" PROPOSE??", 0, 25);
-  // clearDisplay();
-  // displayText(" WELL GUESS WHAT??", 0, 25);
+  // display.setCursor(0, 35);
+  // display.print("      SO...");
+  // display.display();
   // pressNext();
-  // displayText(" NOW YOU CAN!!", 0, 25);
+  // display.setCursor(0, 35);
+  // display.print("    REMEMBER...");
+  // display.display();
   // pressNext();
-  // displayText("(...TYPE IT, OF COURSE)", 0, 25);
-  // displayText(" NOW PLEASE", 0, 25);
-  // pressNext();
-  // displayText("IT IS TIME", 0, 25);
-  // pressNext();
-  // displayText("TO TYPE", 0, 25);
-  // pressNext();
-  // displayText("(NOTE:", 0, 25);
-  // pressNext();
-  // displayText("IF YOU TYPE IT", 0, 25);
-  // pressNext();
-  // displayText("I'LL TAKE IT", 0, 25);
-  // pressNext();
-  // displayText("AS A\n YES", 0, 25);
-  // pressNext();
-  // displayText("OK? OK)", 0, 25);
-  // pressNext();
-  // displayText("LET'S DO IT:", 0, 25);
+  // display.setCursor(0, 25);
+  // display.print("YOU \nALWAYS");
+  // display.display();
   // pressNext();
 }
 

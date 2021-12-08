@@ -198,11 +198,17 @@ char hexaKeys[ROWS][COLS] = {
     {'p', 'j', 'o', 'q'},
     {'r', 'u', 'h', 'v'},
     {'l', 'a', 'i', 'e'}};
+
+char keys[ROWS][COLS] = {
+    {'w', 'y', 'a', 'm'},
+    {'i', 'o', 'r', 'e'},
+    {'l', 'u', 'r', 'v'},
+    {'l', 'm', 'y', 'e'}};
 byte rowPins[ROWS] = {9, 8, 7, 6};     // connect to the row pinouts of the keypad
 byte colPins[COLS] = {13, 12, 11, 10}; // connect to the column pinouts of the keypad
 
 // initialize an instance of class NewKeypad
-Keypad keypad = Keypad(makeKeymap(hexaKeys), rowPins, colPins, ROWS, COLS);
+Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
 
 // indicating variables
 int displayed = 0;
@@ -254,18 +260,33 @@ void loop()
     break;
 
   case 3:
-    Serial.println("3");
-    displayMarry();
-    scene = 4;
+    while (!finished)
+    {
+      Serial.println("33333333");
+      displayLetters();
+    }
+    if (finished)
+    {
+      checkIfMarry();
+    }
+    break;
 
   case 4:
     Serial.println("4");
-    displayLetters();
-    // scene = 5;
+    while (!finished)
+    {
+      displayLetters();
+    }
+    if (finished)
+    {
+      checkIfMarry();
+    }
+    break;
 
-  case 5:
-    Serial.println("5");
-    Heartsflakes(logo_bmp, LOGO_WIDTH, LOGO_HEIGHT);
+    /*case 5:
+      Serial.println("5");
+      Heartsflakes(logo_bmp, LOGO_WIDTH, LOGO_HEIGHT);
+      break;*/
 
   default:
     break;
@@ -278,6 +299,7 @@ void intro()
   display.setFont(&Schoolbell_Regular_15);
   // displayText("HEY YOU!", 0, 30);
   display.setCursor(0, 30);
+  Serial.println("hello world!");
   display.print("HEY YOU!");
   display.display();
   pressNext();
@@ -292,32 +314,6 @@ void intro()
   // change to the next scene
 }
 
-void displayLetters()
-{
-  display.setFont(&Orbitron_Bold_12);
-  char customKey = keypad.getKey(); // this function reads the pressed key
-  if (customKey)
-  {
-    display.display();
-    for (int i = 0; i < 17; i++)
-    {
-      if (textPosition == i)
-      {
-        if (textPosition == 4 || textPosition == 8 || textPosition == 14)
-        {
-          textPosition++;
-        }
-        str[textPosition] = customKey;
-        clearDisplay();
-        display.setCursor(0, 30);
-        display.print(str);
-        display.display();
-        break;
-      }
-    }
-    textPosition++;
-  }
-}
 void displayEnterCreds()
 {
   // init display
@@ -354,6 +350,7 @@ void displayMiddle()
   while (key == NO_KEY)
   {
     key = keypad.getKey();
+    delay(200);
   }
 
   for (int i = 0; i < 4; i++)
@@ -377,11 +374,16 @@ void displayMiddle()
 
 void checkIfCorrect()
 {
-  if (pin[6] == 'w' && pin[7] == 'p' && pin[8] == 'r' && pin[9] == 'l')
+  if (pin[6] == 'w' && pin[7] == 'i' && pin[8] == 'l' && pin[9] == 'l')
   {
     scene = 3;
     displayHeart();
     openDrawers();
+
+    // move the indexes back to the start
+    finished = 0;
+    displayed = 0;
+    textPosition = 0;
   }
   else
   {
@@ -402,11 +404,11 @@ void displayMarry()
   // Serial.println("hereee");
   display.setFont(&Just_Another_Hand_Regular_22);
   display.setCursor(0, 30);
-  // display.print("      AND NOW");
-  // display.display();
-  // pressNext();
+  display.print("      AND NOW");
+  display.display();
+  pressNext();
   // display.setCursor(0, 30);
-  // display.print("    ONE FINAL\n    QUESTION:");
+  // display.println("    ONE FINAL\n    QUESTION:");
   // display.display();
   // pressNext();
   // display.setCursor(0, 35);
@@ -425,6 +427,76 @@ void displayMarry()
   // display.print("YOU \nALWAYS");
   // display.display();
   // pressNext();
+}
+
+void displayLetters()
+{
+  display.setFont(&Orbitron_Bold_12);
+  display.fillRect(0, 23, 127, 30, BLACK);
+  display.setCursor(0, 30);
+
+  char customKey = keypad.getKey(); // this function reads the pressed key
+  while (customKey == NO_KEY)
+  {
+    customKey = keypad.getKey();
+    delay(200);
+  }
+
+  for (int i = 0; i < 17; i++)
+  {
+    if (textPosition == i)
+    {
+      if (textPosition == 4 || textPosition == 8 || textPosition == 14)
+      {
+        textPosition++;
+      }
+      str[textPosition] = customKey;
+      Serial.println(str);
+      display.print(str);
+      display.display();
+      break;
+    }
+  }
+  if (textPosition == 16)
+  {
+    finished = 1;
+  }
+  textPosition++;
+}
+
+void checkIfMarry()
+{
+  if (str[0] == 'w' && str[1] == 'i' && str[2] == 'l' && str[3] == 'l' && str[5] == 'y' && str[6] == 'o' && str[7] == 'u' && str[9] == 'm' && str[10] == 'a' && str[11] == 'r' && str[12] == 'r' && str[13] == 'y' && str[15] == 'm' && str[16] == 'e')
+  {
+    // scene = 5;
+    displayHeart();
+    liftPlatform();
+  }
+  else
+  {
+    displayBrokenHeart();
+    finished = 0;
+    // displayed = 0;
+    textPosition = 0;
+    Serial.println("4444");
+
+    pin[0] = '_';
+    pin[1] = '_';
+    pin[2] = '_';
+    pin[3] = '_';
+    pin[5] = '_';
+    pin[6] = '_';
+    pin[7] = '_';
+    pin[9] = '_';
+    pin[10] = '_';
+    pin[11] = '_';
+    pin[12] = '_';
+    pin[13] = '_';
+    pin[15] = '_';
+    pin[16] = '_';
+    Serial.println("777");
+  }
+  Serial.println("666");
 }
 
 void pressNext()
@@ -481,7 +553,6 @@ void displayHeart()
   display.clearDisplay();
   for (int i = 0; i < 3; i++)
   {
-    Serial.println("1");
     // display the image
     // Draw the bitmap 1:
     display.drawBitmap(0, 0, heart_bitmap, 128, 64, WHITE);

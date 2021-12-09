@@ -252,7 +252,7 @@ static const unsigned char PROGMEM logo_bmp[] =
 
 char pin[11] = {' ', ' ', ' ', ' ', ' ', ' ', '*', '*', '*', '*', 0};
 int pinPosition = 0;
-char str[18] = {'_', '_', '_', '_', ' ', '_', '_', '_\n', ' ', '_', '_', '_', '_', '_', ' ', '_', '_', 0};
+char str[18] = {'_', '_', '_', '_', ' ', '_', '_', '_', ' ', '_', '_', '_', '_', '_', ' ', '_', '_', 0};
 int textPosition = 0;
 
 const byte ROWS = 4; // four rows
@@ -278,7 +278,7 @@ Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
 // indicating variables
 int displayed = 0;
 int finished = 0;
-int scene = 1;
+int scene = 30;
 
 void setup()
 {
@@ -298,6 +298,9 @@ void setup()
 
 void loop()
 {
+  display.setFont(&Schoolbell_Regular_18);
+
+  displayLetters();
   switch (scene)
   {
   case 1:
@@ -325,6 +328,7 @@ void loop()
     break;
 
   case 4:
+    display.setFont(&Schoolbell_Regular_16);
     while (!finished)
     {
       displayLetters();
@@ -347,7 +351,7 @@ void loop()
 void intro()
 {
   clearDisplay();
-  display.setFont(&Schoolbell_Regular_15);
+  display.setFont(&Schoolbell_Regular_18);
   // displayText("HEY YOU!", 0, 30);
   display.setCursor(0, 30);
   display.print("HEY YOU!");
@@ -384,7 +388,7 @@ void displayEnterCreds()
   display.print("Luna Park");
   /////////////MIDDLE/////////////
   display.setCursor(0, 36);
-  display.setFont(&Schoolbell_Regular_15);
+  display.setFont(&Schoolbell_Regular_18);
   display.print(pin);
   display.display();
 
@@ -454,58 +458,56 @@ void displayMarry()
   display.print("      AND NOW");
   display.display();
   pressNext();
-  display.setCursor(0, 30);
-  display.println("    ONE FINAL\n    QUESTION:");
-  display.display();
-  pressNext();
-  display.setCursor(0, 35);
-  display.print("      READY??");
-  display.display();
-  pressNext();
-  display.setCursor(0, 35);
-  display.print("      SO...");
-  display.display();
-  pressNext();
-  display.setCursor(0, 35);
-  display.print("    REMEMBER...");
-  display.display();
-  pressNext();
-  display.setCursor(0, 25);
-  display.print("YOU \nALWAYS");
-  display.display();
-  pressNext();
-  display.clearDisplay();
-  display.setFont(&Just_Another_Hand_Regular_22);
-  display.setCursor(0, 30);
-  display.print("      AND NOW");
-  display.display();
-  pressNext();
-  display.setCursor(0, 30);
-  display.println("    ONE FINAL\n    QUESTION:");
-  display.display();
-  pressNext();
-  display.setCursor(0, 35);
-  display.print("      READY??");
-  display.display();
-  pressNext();
-  display.setCursor(0, 35);
-  display.print("      SO...");
-  display.display();
-  pressNext();
-  display.setCursor(0, 35);
-  display.print("    REMEMBER...");
-  display.display();
-  pressNext();
-  display.setCursor(0, 25);
-  display.print("YOU \nALWAYS");
-  display.display();
-  pressNext();
+  // display.setCursor(0, 30);
+  // display.println("    ONE FINAL\n    QUESTION:");
+  // display.display();
+  // pressNext();
+  // display.setCursor(0, 35);
+  // display.print("      READY??");
+  // display.display();
+  // pressNext();
+  // display.setCursor(0, 35);
+  // display.print("      SO...");
+  // display.display();
+  // pressNext();
+  // display.setCursor(0, 35);
+  // display.print("    REMEMBER...");
+  // display.display();
+  // pressNext();
+  // display.setCursor(0, 25);
+  // display.print("YOU \nALWAYS");
+  // display.display();
+  // pressNext();
+  // display.clearDisplay();
+  // display.setFont(&Just_Another_Hand_Regular_22);
+  // display.setCursor(0, 30);
+  // display.print("      AND NOW");
+  // display.display();
+  // pressNext();
+  // display.setCursor(0, 30);
+  // display.println("    ONE FINAL\n    QUESTION:");
+  // display.display();
+  // pressNext();
+  // display.setCursor(0, 35);
+  // display.print("      READY??");
+  // display.display();
+  // pressNext();
+  // display.setCursor(0, 35);
+  // display.print("      SO...");
+  // display.display();
+  // pressNext();
+  // display.setCursor(0, 35);
+  // display.print("    REMEMBER...");
+  // display.display();
+  // pressNext();
+  // display.setCursor(0, 25);
+  // display.print("YOU \nALWAYS");
+  // display.display();
+  // pressNext();
 }
 
 void displayLetters()
 {
-  display.setFont(&Orbitron_Bold_12);
-
   if (!displayed)
   {
     display.setCursor(0, 30);

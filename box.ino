@@ -284,7 +284,7 @@ Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
 // indicating variables
 int displayed = 0;
 int finished = 0;
-int scene = 99;
+int scene = 1;
 
 void setup()
 {
@@ -304,7 +304,6 @@ void setup()
 
 void loop()
 {
-  displayMarry();
    switch (scene)
   {
     case 1:
@@ -544,32 +543,28 @@ void displayMarry()
   display.print(F("     TYPE THE\n\n ---OBVIOUS---\n\n    QUESTION"));
   display.display();
   pressNext();
-  display.setCursor(0, 9);
-  display.print(F("     TYPE THE\n\n ---OBVIOUS---\n\n    QUESTION"));
+  display.setCursor(0, 35);
+  display.print(F("    REMEMBER"));
   display.display();
   pressNext();
-  display.setCursor(0, 30);
-  display.print(F("       REMEMBER"));
+  display.setCursor(0, 25);
+  display.print(F("    I'M ON ONE \n\n        KNEE"));
   display.display();
   pressNext();
-  display.setCursor(0, 9);
-  display.print(F("     I'M ON ONE KNEE"));
+  display.setCursor(0, 25);
+  display.print(F("     AND YOU\n\n WANT GLITTER"));
   display.display();
   pressNext();
-  display.setCursor(0, 9);
-  display.print(F("     AND YOU WANT GLITTER"));
-  display.display();
-  pressNext();
-  display.setCursor(0, 9);
-  display.print(F("     SO IT CAN'T BE THAT HARD..."));
+  display.setCursor(0, 25);
+  display.print(F("    SO IT CAN'T\n       BE THAT\n        HARD..."));
   display.display();
   pressNext();
   display.setCursor(0, 9);
-  display.print(F("     I BELIEVE IN YOU"));
+  display.print(F("     I BELIEVE\n\n\n       IN YOU"));
   display.display();
   pressNext();
-  display.setCursor(0, 9);
-  display.print(F("     GOOD LUCK!"));
+  display.setCursor(0, 35);
+  display.print(F("   GOOD LUCK :)"));
   display.display();
   pressNext();
 }

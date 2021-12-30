@@ -12,11 +12,10 @@
 
 // stepper motor lib and params
 #include <Stepper.h>
-int stepsPerRevolution = 2048;
+const float stepsPerRevolution = 2048;
+int stepsRequired;
 Stepper platform(stepsPerRevolution, 2, 4, 3, 5);
 Stepper drawers(stepsPerRevolution, A0, A2, A1, A3);
-// Stepper platfort(stepsPerRevolution, 3, 1, 2, 0);
-int motSpeed = 10;
 int tt = 0;
 int xx = 0;
 int yy = 0;
@@ -258,17 +257,23 @@ int textPosition = 0;
 const byte ROWS = 4; // four rows
 const byte COLS = 4; // four columns
 // define the symbols on the buttons of the keypads
-char hexaKeys[ROWS][COLS] = {
-    {'w', 'y', 'm', '6'},
-    {'p', '2', 'o', 'q'},
-    {'r', 'u', '0', 't'},
-    {'l', 'a', 'i', 'e'}};
+// char hexaKeys[ROWS][COLS] = {
+//    {'w', 'y', 'm', '6'},
+//    {'p', '2', 'o', 't'},
+//    {'r', 'u', '0', 'n'},
+//    {'l', 'a', 'i', 'e'}};
 
 char keys[ROWS][COLS] = {
-    {'w', 'y', 'a', 'm'},
-    {'i', 'o', 'r', 'e'},
-    {'l', 'u', 'r', 'v'},
-    {'l', 'm', 'y', 'e'}};
+    {'w', 'p', 'r', 'l'},
+    {'y', '2', 'u', 'a'},
+    {'m', 'o', '0', 'i'},
+    {'6', 't', 'n', 'e'}};
+
+// char keys[ROWS][COLS] = {
+//     {'w', 'y', 'a', 'm'},
+//     {'i', 'o', 'r', 'e'},
+//     {'l', 'u', 'r', 'v'},
+//     {'l', 'm', 'y', 'e'}};
 byte rowPins[ROWS] = {9, 8, 7, 6};     // connect to the row pinouts of the keypad
 byte colPins[COLS] = {13, 12, 11, 10}; // connect to the column pinouts of the keypad
 
@@ -285,8 +290,7 @@ void setup()
   // start the Wire lib for the I2C
   Wire.begin();
 
-  drawers.setSpeed(motSpeed);
-  platform.setSpeed(motSpeed);
+
 
   // initialize OLED with I2C addr 0x3C and set stuff:
   display.begin(SSD1306_SWITCHCAPVCC, 0x3C);
@@ -298,6 +302,11 @@ void setup()
 
 void loop()
 {
+//  drawers.setSpeed(720);
+//  platform.setSpeed(720);
+//  stepsRequired  =  360;
+//  drawers.step((stepsRequired)*1.3);
+//  platform.step((stepsRequired)*1.3);
   switch (scene)
   {
   case 1:
@@ -405,13 +414,13 @@ void displayEnterCreds()
   ///////////HEADER////////////
   display.setCursor(0, 8);
   display.setFont(&Orbitron_Bold_12);
-  display.print("Enter Password:");
+  display.print(F("Enter Password:"));
 
   ////////////FOOTER/////////////
   display.setCursor(25, 60);
   display.setFont(&Open_Sans_Hebrew_Condensed_Light_Italic_14);
 
-  display.print("Hint:Luna Park");
+  display.print(F("Hint:Luna Park"));
   /////////////MIDDLE/////////////
   display.setCursor(0, 40);
   display.setFont(&Schoolbell_Regular_18);
@@ -452,7 +461,7 @@ void displayMiddle()
 
 void checkIfCorrect()
 {
-  if (pin[6] == 'w' && pin[7] == 'i' && pin[8] == 'l' && pin[9] == 'l')
+  if (pin[6] == '0' && pin[7] == '2' && pin[8] == '0' && pin[9] == '6')
   {
     scene = 3;
     displayHeart();
@@ -509,11 +518,11 @@ void displayMarry()
   display.display();
   pressNext();
   display.setCursor(0, 35);
-  display.println("      ONE SEC");
+  display.print(F("      ONE SEC"));
   display.display();
   pressNext();
   display.setCursor(0, 30);
-  display.println("          ........");
+  display.print("          ........");
   display.display();
   pressNext();
   display.setCursor(0, 35);
@@ -529,7 +538,7 @@ void displayMarry()
   display.display();
   pressNext();
   display.setCursor(0, 30);
-  display.println(" AND THE TASK\nIS AS FOLLOWS:");
+  display.println(F(" AND THE TASK\nIS AS FOLLOWS:"));
   display.display();
   pressNext();
   display.setFont(&Orbitron_Bold_12);
@@ -670,8 +679,8 @@ void liftPlatform()
 
 void closeBox()
 {
-  drawers.step(-stepsPerRevolution);
-  platform.step(-stepsPerRevolution);
+  drawers.step((360 * 1.3));
+  platform.step((360 * 1.3));
 }
 
 void displayHeart()

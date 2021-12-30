@@ -1,6 +1,6 @@
 {
     "board": "arduino:avr:uno",
     "programmer": "arduino:usbasp",
-    "port": "/dev/ttyACM0",
+    "port": "/dev/ttyUSB0",
     "sketch": "box.ino"
 }

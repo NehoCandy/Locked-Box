@@ -12,15 +12,15 @@
 
 // stepper motor lib and params
 #include <Stepper.h>
-const float stepsPerRevolution = 2048;
-int stepsRequired;
-Stepper platform(stepsPerRevolution, 2, 4, 3, 5);
-Stepper drawers(stepsPerRevolution, A0, A2, A1, A3);
+ 
+const float stepsPerRevolution =  2048;
+Stepper drawers(stepsPerRevolution, 2, 4, 3, 5);
+Stepper platform(stepsPerRevolution, 10, 12, 11, 13);
 int tt = 0;
 int xx = 0;
 int yy = 0;
 
-#define OLED_RESET 4
+#define OLED_RESET -1
 Adafruit_SSD1306 display(OLED_RESET);
 
 byte screen = 0;
@@ -275,7 +275,7 @@ char keys[ROWS][COLS] = {
 //     {'l', 'u', 'r', 'v'},
 //     {'l', 'm', 'y', 'e'}};
 byte rowPins[ROWS] = {9, 8, 7, 6};     // connect to the row pinouts of the keypad
-byte colPins[COLS] = {13, 12, 11, 10}; // connect to the column pinouts of the keypad
+byte colPins[COLS] = {A3, A2, A1, A0}; // connect to the column pinouts of the keypad
 
 // initialize an instance of class NewKeypad
 Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
@@ -302,11 +302,6 @@ void setup()
 
 void loop()
 {
-//  drawers.setSpeed(720);
-//  platform.setSpeed(720);
-//  stepsRequired  =  360;
-//  drawers.step((stepsRequired)*1.3);
-//  platform.step((stepsRequired)*1.3);
   switch (scene)
   {
   case 1:
@@ -380,10 +375,6 @@ void intro()
   display.print(F("           ......."));
   display.display();
   pressNext();
-  //  display.setCursor(0, 30);
-  //  display.print("        OKKKK");
-  //  display.display();
-  //  pressNext();
   display.setCursor(0, 30);
   display.print(F("SO AFTER THAT\n        INTRO"));
   display.display();
@@ -406,10 +397,6 @@ void intro()
 
 void displayEnterCreds()
 {
-  // init display
-  // clear display buffer
-  display.clearDisplay();
-
   // set position of printing
   ///////////HEADER////////////
   display.setCursor(0, 8);
@@ -498,23 +485,23 @@ void displayMarry()
   display.display();
   pressNext();
   display.setCursor(0, 35);
-  display.println(F("     BUT FIRST"));
+  display.print(F("     BUT FIRST"));
   display.display();
   pressNext();
   display.setCursor(0, 30);
-  display.println(F("   WE NEED TO\n      BE MORE... "));
+  display.print(F("   WE NEED TO\n      BE MORE... "));
   display.display();
   pressNext();
   display.setCursor(0, 35);
-  display.println(F("       FORMAL:"));
+  display.print(F("       FORMAL:"));
   display.display();
   pressNext();
   display.setCursor(0, 30);
-  display.println(F("   LET ME HOLD\n      THE BOX"));
+  display.print(F("   LET ME HOLD\n      THE BOX"));
   display.display();
   pressNext();
   display.setCursor(0, 30);
-  display.println(F("    AND TO GET\n   IN POSITION"));
+  display.print(F("    AND TO GET\n   IN POSITION"));
   display.display();
   pressNext();
   display.setCursor(0, 35);
@@ -522,19 +509,19 @@ void displayMarry()
   display.display();
   pressNext();
   display.setCursor(0, 30);
-  display.print("          ........");
+  display.print(F("          ........"));
   display.display();
   pressNext();
   display.setCursor(0, 35);
-  display.println("         NOW-");
+  display.println(F("         NOW-"));
   display.display();
   pressNext();
   display.setCursor(0, 35);
-  display.println("       I KNEEL");
+  display.println(F("       I KNEEL"));
   display.display();
   pressNext();
   display.setCursor(0, 35);
-  display.println("      YOU TYPE");
+  display.println(F("      YOU TYPE"));
   display.display();
   pressNext();
   display.setCursor(0, 30);
@@ -616,6 +603,7 @@ void checkIfMarry()
   {
     scene = 5;
     displayRing();
+    delay(1100);
     liftPlatform();
   }
   else
@@ -670,11 +658,14 @@ void clearDisplay()
 
 void openDrawers()
 {
-  drawers.step(stepsPerRevolution);
+  drawers.setSpeed(3);
+//  stepsRequired = 360;
+  drawers.step(-stepsPerRevolution/5);
 }
 void liftPlatform()
 {
-  platform.step(stepsPerRevolution);
+  platform.setSpeed(3);
+  platform.step(stepsPerRevolution/5);
 }
 
 void closeBox()
